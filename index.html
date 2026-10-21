@@ -1,0 +1,392 @@
+17:30
+Сіз жібердіңіз
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f5f9">
+<title>Миний бичиг баримт</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg-gradient: linear-gradient(180deg, #e9f0f8 0%, #f4f7fc 40%, #f4f7fc 100%);
+  --text-color: #1a1c1e;
+  --toggle-blue: #227bf0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  color: var(--text-color);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  max-width: 450px;
+  height: 64px;
+  padding: calc(env(safe-area-inset-top) + 12px) 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.iconbtn {
+  border: 0;
+  background: #ffffff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.iconbtn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #2c3e50;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+h1 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+main {
+  width: 100%;
+  max-width: 450px;
+  padding: 16px 20px 40px;
+}
+
+.info-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  margin-bottom: 20px;
+}
+
+.toggle-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.eye-icon-bg {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: #f0f3f7;
+  border-radius: 50%;
+}
+
+.eye-icon-bg svg {
+  width: 22px;
+  height: 22px;
+  stroke: #4a5568;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.switch {
+  width: 58px;
+  height: 32px;
+  border: 0;
+  border-radius: 20px;
+  background: #cbd5e1;
+  padding: 3px;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.switch span {
+  display: block;
+  width: 26px;
+  height: 26px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.switch[aria-checked="true"]{
+  background: var(--toggle-blue);
+}
+
+.switch[aria-checked="true"] span {
+  transform: translateX(26px);
+}
+
+.card-panel {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.static-card {
+  width: 100%;
+  aspect-ratio: 1.58;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.id-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 450px;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 20px 20px 30px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.1, 1, 0.1, 1);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+.modal-flip-card {
+  background-color: transparent;
+  width: 100%;
+  aspect-ratio: 1.58;
+  perspective: 1000px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  touch-action: manipulation;
+}
+
+.modal-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.modal-flip-card.flipped .modal-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.modal-front, .modal-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.modal-back {
+  transform: rotateY(180deg);
+  background: #fff;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.modal-btn.primary {
+  background: #227bf0;
+  color: white;
+}
+
+.modal-btn.secondary {
+  background: #f1f5f9;
+  color: #334155;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <button class="iconbtn" id="back" aria-label="Буцах">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <h1>Миний бичиг баримт</h1>
+  <button class="iconbtn" id="refresh" aria-label="Шинэчлэх">
+    <svg viewBox="0 0 24 24"><path d="M20 11A8 8 0 1 0 11 19a8 8 0 0 0 5.6-2.34L19 19"/><path d="M19 14v5h-5"/></svg>
+  </button>
+</header>
+
+<main>
+  <section class="info-toggle">
+    <div class="toggle-left">
+      <div class="eye-icon-bg">
+        <svg viewBox="0 0 24 24">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+          <line x1="1" y1="1" x2="23" y2="23"/>
+        </svg>
+      </div>
+      <div class="label">Бичиг баримтийн мэдээлэл</div>
+    </div>
+    <button class="switch" id="toggle" role="switch" aria-checked="true" aria-label="Бичиг баримт харуулах">
+      <span></span>
+    </button>
+  </section>
+
+  <section class="card-panel" id="cardPanel">
+    <div class="static-card" id="openModalCard" title="Дарж томруулах">
+      <img class="id-image" src="png1.png" alt="Иргэний үнэмлэх урд тал" draggable="false">
+    </div>
+  </section>
+</main>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-content">
+    <div class="modal-header">Иргэний үнэмлэх</div>
+
+    <div class="modal-flip-card" id="modalFlipCard" title="Дарж ар талыг харна уу">
+      <div class="modal-flip-inner">
+        <div class="modal-front">
+          <img class="id-image" src="png1.JPEG" alt="Modal Front (png1)" draggable="false">
+        </div>
+        <div class="modal-back">
+          <img class="id-image" src="png2.JPEG" alt="Modal Back (png2)" draggable="false">
+        </div>
+      </div>
+    </div>
+
+    <button class="modal-btn primary" id="modalBtnAction">Лавлагаа авах</button>
+    <button class="modal-btn secondary" id="modalBtnClose">Хаах</button>
+  </div>
+</div>
+
+<script>
+const toggle = document.getElementById('toggle');
+const panel = document.getElementById('cardPanel');
+const openModalCard = document.getElementById('openModalCard');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalFlipCard = document.getElementById('modalFlipCard');
+
+toggle.addEventListener('click', () => {
+  const on = toggle.getAttribute('aria-checked') !== 'true';
+  toggle.setAttribute('aria-checked', String(on));
+  panel.classList.toggle('hidden', !on);
+});
+
+openModalCard.addEventListener('click', () => {
+  modalOverlay.classList.add('active');
+});
+
+const flipOn = () => modalFlipCard.classList.add('flipped');
+const flipOff = () => modalFlipCard.classList.remove('flipped');
+
+modalFlipCard.addEventListener('mousedown', flipOn);
+modalFlipCard.addEventListener('mouseup', flipOff);
+modalFlipCard.addEventListener('mouseleave', flipOff);
+
+modalFlipCard.addEventListener('touchstart', flipOn, { passive: true });
+modalFlipCard.addEventListener('touchend', flipOff);
+modalFlipCard.addEventListener('touchcancel', flipOff);
+modalFlipCard.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function closeModal() {
+  modalOverlay.classList.remove('active');
+  flipOff();
+}
+
+document.getElementById('modalBtnClose').addEventListener('click', closeModal);
+document.getElementById('modalBtnAction').addEventListener('click', closeModal);
+
+document.getElementById('refresh').addEventListener('click', () => {
+  panel.classList.remove('hidden');
+  toggle.setAttribute('aria-checked','true');
+});
+</script>
+
+</body>
+</html>
